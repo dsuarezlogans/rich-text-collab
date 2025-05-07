@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+      "baseUrl": "./",
+      "paths": {
+        "@tiptap/core": ["node_modules/@tiptap/core"]
+      }
+    }
+  }
+  
