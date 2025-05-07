@@ -32,9 +32,11 @@ function getYDoc(docName) {
 io.on('connection', (socket) => {
     const docName = socket.handshake.query.docName;
     const ydoc = getYDoc(docName);
-  
+
+    socket.join(docName)
+
     console.log(`Client connected to doc: ${docName}`);
-    
+
     try {
       // Send initial state to client
       const fullUpdate = Y.encodeStateAsUpdate(ydoc);
@@ -43,12 +45,12 @@ io.on('connection', (socket) => {
     catch (error) {
       console.error('Error sending initial state:', error);
     }
-  
+
     // When client sends an update, apply to doc and broadcast to others
     socket.on('sync', (update) => {
         console.log('Received update:', update);
       Y.applyUpdate(ydoc, update);
-      socket.broadcast.emit('sync', update);
+      socket.to(docName).emit('sync', update)
     });
   });
 

@@ -194,6 +194,9 @@ export function SimpleEditor() {
     height: 0,
   })
   const toolbarRef = React.useRef<HTMLDivElement>(null)
+  let params = new URLSearchParams(document.location.search);
+  let docName = params.get("docName") || 'demo';
+  console.log('docName:', docName);
   const ydoc = new Y.Doc()
   const yXmlFragment = ydoc.getXmlFragment('prosemirror')
   const awareness = new awarenessProtocol.Awareness(ydoc)
@@ -219,7 +222,7 @@ export function SimpleEditor() {
   React.useEffect(() => {
           console.log('Connecting to WebSocket server...')
           const socket = io('ws://localhost:3000', {
-              query: { docName: 'demo' }
+              query: { docName }
           })
   
           socket.on('sync', (update) => {
